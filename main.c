@@ -4,6 +4,18 @@
 // max height of the huffman tree
 #define MAX_TREE_HT 100
 
+struct lookupitem
+{
+    int *nocode;
+    char letter;
+};
+int currindex = 0;
+
+//struct lookupitem table[6];
+int table[6][6];
+char letters[6];
+int tops[6];
+
 // makes a heap of the data[]
 struct Tree *createAndBuildMinHeap(char data[], int freq[], int size)
 {
@@ -33,7 +45,6 @@ struct TreeNode *buildHuffmanTree(char data[], int freq[], int size)
 
         left = extractMin(minHeap);
         right = extractMin(minHeap);
-
         top = addNode('$', left->freq + right->freq);
         top->left = left;
         top->right = right;
@@ -64,6 +75,13 @@ void encode(struct TreeNode *root, int arr[], int top)
     {
         printf("%c: ", root->data);
         printArr(arr, top);
+        for (int i = 0; i < top; i++)
+        {
+            table[currindex][i] = arr[i];
+        }
+        letters[currindex] = root->data;
+        tops[currindex] = top;
+        currindex++;
     }
 }
 
@@ -76,5 +94,10 @@ int main()
     struct TreeNode *root = buildHuffmanTree(carr, freq, size);
     int arr[MAX_TREE_HT], top = 0;
     encode(root, arr, top);
+    for (int i = 0; i < 6; i++)
+    {
+        printf("%c ", letters[i]);
+        printArr(table[i], tops[i]);
+    }
     return 0;
 }
