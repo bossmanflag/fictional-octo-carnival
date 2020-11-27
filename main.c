@@ -2,13 +2,7 @@
 #include <stdlib.h>
 #include "utils.c"
 // max height of the huffman tree
-#define MAX_TREE_HT 100
-
-struct lookupitem
-{
-    int *nocode;
-    char letter;
-};
+#define MAX_TREE_HT 10
 int currindex = 0;
 
 //struct lookupitem table[6];
@@ -75,6 +69,8 @@ void encode(struct TreeNode *root, int arr[], int top)
     {
         printf("%c: ", root->data);
         printArr(arr, top);
+        printf("Size of the %c : %d\n", root->data, (int)(top * sizeof(int)));
+
         for (int i = 0; i < top; i++)
         {
             table[currindex][i] = arr[i];
@@ -90,14 +86,23 @@ int main()
 {
     char carr[] = {'a', 'b', 'c', 'd', 'e', 'f'};
     int freq[] = {5, 9, 12, 13, 16, 45};
+    printf("Consider a string of the following frequency\n");
+    int sizeofthestring = 0;
+    for (int i = 0; i < 6; i++)
+    {
+        printf("Size of all %c = %d bits \n", carr[i], sizeof(carr[i]) * 8 * freq[i]);
+        sizeofthestring += sizeof(carr[i]) * 8 * freq[i];
+    }
+    printf("In total, this means total space occupied by the string is %d bits\n", sizeofthestring);
+
     int size = sizeof(carr) / sizeof(carr[0]);
     struct TreeNode *root = buildHuffmanTree(carr, freq, size);
     int arr[MAX_TREE_HT], top = 0;
     encode(root, arr, top);
-    for (int i = 0; i < 6; i++)
-    {
-        printf("%c ", letters[i]);
-        printArr(table[i], tops[i]);
-    }
+    // for (int i = 0; i < 6; i++)
+    // {
+    //     printf("%c ", letters[i]);
+    //     printArr(table[i], tops[i]);
+    //
     return 0;
 }
