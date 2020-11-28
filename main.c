@@ -9,6 +9,7 @@ int currindex = 0;
 int table[6][6];
 char letters[6];
 int tops[6];
+int sum = 0;
 
 // makes a heap of the data[]
 struct Tree *createAndBuildMinHeap(char data[], int freq[], int size)
@@ -70,7 +71,7 @@ void encode(struct TreeNode *root, int arr[], int top)
         printf("%c: ", root->data);
         printArr(arr, top);
         printf("Size of the %c : %d\n", root->data, (int)(top * sizeof(int)));
-
+        sum += (int)(top * sizeof(int));
         for (int i = 0; i < top; i++)
         {
             table[currindex][i] = arr[i];
@@ -99,6 +100,7 @@ int main()
     struct TreeNode *root = buildHuffmanTree(carr, freq, size);
     int arr[MAX_TREE_HT], top = 0;
     encode(root, arr, top);
+    printf("After compressing we get %d bits ", sum + 6);
     // for (int i = 0; i < 6; i++)
     // {
     //     printf("%c ", letters[i]);
